@@ -4,8 +4,10 @@
     "sourceMap": false,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
-    "module": "es2020",
+    "strict": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "target": "es2019",
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "allowJs": true
