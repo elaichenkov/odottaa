@@ -1,0 +1,15 @@
+{
+"compilerOptions": {
+    "outDir": "./lib",
+    "sourceMap": false,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "allowJs": true
+  },
+  "files": ["src/index.d.ts"],
+  "include": ["src", "tests"]
+}

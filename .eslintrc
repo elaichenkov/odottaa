@@ -1,0 +1,24 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "no-console": "off",
+    "arrow-parens": "error",
+    "camelcase": "error",
+    "array-bracket-newline": "error",
+    "arrow-spacing": "error",
+    "complexity": "error",
+    "no-duplicate-imports": "error",
+    "prettier/prettier": [2, { "useTabs": false }]
+  }
+}
