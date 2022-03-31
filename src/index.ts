@@ -236,3 +236,5 @@ export const playwrightApiMatchers = {
     return { message, pass };
   },
 };
+
+export default playwrightApiMatchers;
