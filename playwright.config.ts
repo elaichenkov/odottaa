@@ -4,7 +4,7 @@ import { expect, PlaywrightTestConfig } from '@playwright/test';
 expect.extend(playwrightApiMatchers);
 
 const config: PlaywrightTestConfig = {
-  reporter: 'dot',
+  reporter: process.env.CI ? 'github' : 'list',
   webServer: {
     command: 'npm start',
     port: 3000,
