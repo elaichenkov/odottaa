@@ -2,6 +2,7 @@ import type { APIResponse } from 'playwright-core';
 
 declare global {
   namespace PlaywrightTest {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Matchers<R> {
       /**
        * Asserts that the response status code is equal to the expected value.
