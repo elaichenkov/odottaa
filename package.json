@@ -9,13 +9,20 @@
     "lib/src/index.d.ts"
   ],
   "scripts": {
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
     "build": "tsc",
     "postbuild": "cp ./src/index.d.ts lib/src/index.d.ts",
     "start": "node server/index.js",
     "test": "playwright test",
     "lint": "eslint --ext .ts src/",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "format:check": "prettier --config .prettierrc 'src/**/*.ts' --check"
+    "format:check": "prettier --config .prettierrc 'src/**/*.ts' --check",
+    "release": "release-it --github.release",
+    "release:ci": "npm run release -- --ci --npm.skipChecks --no-git.requireCleanWorkingDir",
+    "release:patch": "npm run release -- patch",
+    "release:minor": "npm run release -- minor",
+    "release:major": "npm run release -- major"
   },
   "repository": {
     "type": "git",
