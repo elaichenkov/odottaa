@@ -39,6 +39,17 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Run eslint & prettier
+        run: |
+          npm run lint
+          npm run format:check
+
+      - name: Install Playwright dependencies
+        run: npx playwright install-deps
+
+      - name: Run tests
+        run: npm test
+
       - name: Build Project
         run: npm run build
         env:

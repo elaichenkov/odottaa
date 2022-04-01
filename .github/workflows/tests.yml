@@ -26,8 +26,8 @@ jobs:
       - name: Run eslint & prettier
         run: npm run lint && npm run format:check
 
-      - name: Install Playwright
+      - name: Install Playwright dependencies
         run: npx playwright install-deps
 
-      - name: Run your tests
+      - name: Run tests
         run: npm test
