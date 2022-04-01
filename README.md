@@ -19,11 +19,12 @@
 </div>
 
 ---
-[![Test](https://github.com/elaichenkov/odottaa/actions/workflows/tests.yml/badge.svg)](https://github.com/elaichenkov/odottaa/actions/workflows/tests.yml)
-[![total npm downloads](https://img.shields.io/npm/dt/odottaa.svg)](https://www.npmjs.com/package/odottaa)
-[![NPM version](https://img.shields.io/npm/v/odottaa.svg)](https://www.npmjs.com/package/odottaa)
-[![Commits](https://img.shields.io/github/commit-activity/y/elaichenkov/playwright-expect.svg)](https://github.com/elaichenkov/odottaa/commits/main)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![test](https://github.com/elaichenkov/odottaa/actions/workflows/tests.yml/badge.svg)](https://github.com/elaichenkov/odottaa/actions/workflows/tests.yml)
+[![NPM version](https://img.shields.io/npm/v/odottaa.svg?style=flat&color=red)](https://www.npmjs.com/package/odottaa)
+[![monthly downloads](https://img.shields.io/npm/dm/odottaa.svg?style=flat&color=orange&label=monthly%20downloads)](https://www.npmjs.com/package/odottaa)
+[![downloads all time](https://img.shields.io/npm/dt/odottaa.svg?style=flat&color=yellow&label=lifetime%20downloads)](https://www.npmjs.com/package/odottaa)
+[![commits](https://img.shields.io/github/commit-activity/y/elaichenkov/playwright-expect.svg?style=flat&color=purple)](https://github.com/elaichenkov/odottaa/commits/main)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg?style=flat&color=blue)](LICENSE)
 
 ## Table of Contents
 
