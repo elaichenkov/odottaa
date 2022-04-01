@@ -30,7 +30,7 @@ Call log:
 `;
 };
 
-export const playwrightApiMatchers = {
+const playwrightApiMatchers = {
   async toHaveStatusCode(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: number) {
     const matcherName = 'toHaveStatusCode';
     const { isNot, promise } = this;
