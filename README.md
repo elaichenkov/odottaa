@@ -52,26 +52,26 @@ npm i -D odottaa
 
 ## Usage
 
-1. Import `import playwrightApiMatchers from 'odottaa'` module
-2. Extend `expect.extend(playwrightApiMatchers)` expect with custom API matchers
+1. Import `odottaa` module
+2. Extend expect with custom API matchers
 
 ```typescript
-// In your playwright.config.ts
+// 1. In your playwright.config.ts
 import { expect } from '@playwright/test';
 import playwrightApiMatchers from 'odottaa';
 
-// extend expect with custom API matchers
+// 2. extend expect with custom API matchers
 expect.extend(playwrightApiMatchers);
 ```
 
 ### JavaScript
 
 ```javascript
-// In your playwright.config.js
+// 1. In your playwright.config.js
 const { expect } = require('@playwright/test');
 const { default: playwrightApiMatchers } = require('odottaa');
 
-// extend expect with custom API matchers
+// 2. extend expect with custom API matchers
 expect.extend(playwrightApiMatchers);
 ```
 
