@@ -1,5 +1,3 @@
-import '../src/index';
-
 import { test, expect } from '@playwright/test';
 
 test.describe('matchers', () => {
