@@ -69,7 +69,7 @@ expect.extend(playwrightApiMatchers);
 ```javascript
 // In your playwright.config.js
 const { expect } = require('@playwright/test');
-const playwrightApiMatchers = require('odottaa');
+const { default: playwrightApiMatchers } = require('odottaa');
 
 // extend expect with custom API matchers
 expect.extend(playwrightApiMatchers);
