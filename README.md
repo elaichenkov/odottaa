@@ -1,7 +1,5 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://vshymanskyy.github.io/StandWithUkraine)
 
----
-
 <div align="center">
 <h1 align="center">odottaa</h1>
 
