@@ -25,7 +25,6 @@
 [![Commits](https://img.shields.io/github/commit-activity/y/elaichenkov/playwright-expect.svg)](https://github.com/elaichenkov/odottaa/commits/main)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -53,7 +52,8 @@ npm i -D odottaa
 
 ## Usage
 
-Import `import playwrightApiMatchers from 'odottaa'` <br>and then extend `expect.extend(playwrightApiMatchers)` expect with custom API matchers
+1. Import `import playwrightApiMatchers from 'odottaa'` module
+2. Extend `expect.extend(playwrightApiMatchers)` expect with custom API matchers
 
 ```typescript
 // In your playwright.config.ts
@@ -72,7 +72,7 @@ const { expect } = require('@playwright/test');
 const playwrightApiMatchers = require('odottaa');
 
 // extend expect with custom API matchers
-expect.extend(matchers);
+expect.extend(playwrightApiMatchers);
 ```
 
 ## Custom matchers
