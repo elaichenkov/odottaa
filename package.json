@@ -1,6 +1,6 @@
 {
   "name": "odottaa",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "🦥 Custom playwright matchers to test the state of the API response",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
