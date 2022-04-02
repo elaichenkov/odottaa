@@ -23,6 +23,7 @@ export enum Label {
   Location = 'location:',
   Headers = 'headers:',
   Header = 'header name:',
+  ContentType = 'content type:',
 }
 
 const getLabel = (matcherName: string): Label => {
@@ -31,10 +32,11 @@ const getLabel = (matcherName: string): Label => {
     case 'toBeForbidden':
     case 'toBeUnauthorized':
     case 'toBeNotFound':
+    case 'toBeCreated':
       return Label.StatusCode;
     case 'toHaveStatusText':
       return Label.StatusText;
-    case 'toHaveTextContent':
+    case 'toContainTextContent':
       return Label.Text;
     case 'toHaveJSON':
     case 'toContainJSON':
@@ -48,6 +50,8 @@ const getLabel = (matcherName: string): Label => {
       return Label.Header;
     case 'toBeRedirected':
       return Label.Url;
+    case 'toHaveContentType':
+      return Label.ContentType;
     default: {
       return Label.Expected;
     }
