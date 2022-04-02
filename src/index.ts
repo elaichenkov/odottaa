@@ -32,7 +32,7 @@ const playwrightApiMatchers = {
 
     return { pass, message };
   },
-  async toHaveJSON(this: thisType, response: APIResponse, expected: object) {
+  async toHaveJSON(this: thisType, response: APIResponse, expected: unknown) {
     const expectedMatcherName = 'toHaveJSON';
     const received = await response.json();
 
@@ -46,7 +46,7 @@ const playwrightApiMatchers = {
 
     return { pass, message };
   },
-  async toContainJSON(this: thisType, response: APIResponse, expected: object) {
+  async toContainJSON(this: thisType, response: APIResponse, expected: unknown) {
     const originalMatcherName = 'toContainEqual';
     const expectedMatcherName = 'toContainJSON';
     const received = await response.json();
@@ -82,9 +82,9 @@ const playwrightApiMatchers = {
 
     return { pass, message };
   },
-  async toHaveHeader(this: thisType, response: APIResponse, expected: object) {
+  async toHaveHeaders(this: thisType, response: APIResponse, expected: object) {
     const originalMatcherName = 'toMatchObject';
-    const expectedMatcherName = 'toHaveHeader';
+    const expectedMatcherName = 'toHaveHeaders';
     const received = response.headers();
 
     const { message: originalMessage, pass } = jestExpect.toMatchObject.call(this, received, expected) as Result;
@@ -93,12 +93,15 @@ const playwrightApiMatchers = {
 
     return { pass, message };
   },
-  async toHaveHeaderName(this: thisType, response: APIResponse, expected: string) {
+  async toHaveHeader(this: thisType, response: APIResponse, expectedKey: string, expectedValue?: string) {
     const originalMatcherName = 'toHaveProperty';
-    const expectedMatcherName = 'toHaveHeaderName';
+    const expectedMatcherName = 'toHaveHeader';
     const received = response.headers();
+    const expected = expectedValue ? [expectedKey, expectedValue] : [expectedKey];
 
-    const { message: originalMessage, pass } = jestExpect.toHaveProperty.call(this, received, expected) as Result;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { message: originalMessage, pass } = jestExpect.toHaveProperty.call(this, received, ...expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
