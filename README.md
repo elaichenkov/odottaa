@@ -30,13 +30,22 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [JavaScript](#javascript)
-- [Custom matchers](#custom-matchers)
+- [API](#api)
   - [toHaveStatusCode](#tohavestatuscode)
   - [toHaveStatusText](#tohavestatustext)
+  - [toBeCreated](#tobecreated)
+  - [toBeUnauthorized](#tobeunauthorized)
+  - [toBeForbidden](#tobeforbidden)
+  - [toBeNotFound](#tobenotfound)
   - [toHaveJSON](#tohavejson)
   - [toContainJSON](#tocontainjson)
+  - [toMatchJSON](#tomatchjson)
   - [toHaveHeader](#tohaveheader)
-  - [toHaveText](#tohavetext)
+  - [toHaveHeaders](#tohaveheaders)
+  - [toHaveContentType](#tohavecontenttype)
+  - [toContainTextContent](#tocontaintextcontent)
+  - [toHaveLocation](#tohavelocation)
+  - [toBeRedirected](#toberedirected)
 - [Author](#author)
 - [License](#license)
 
@@ -74,11 +83,11 @@ const { default: playwrightApiMatchers } = require('odottaa');
 expect.extend(playwrightApiMatchers);
 ```
 
-## Custom matchers
+## API
 
 ### toHaveStatusCode
 
-The `toHaveStatusCode` matcher verifies that the response is equal the expected status code
+Use `toHaveStatusCode` matcher to verify that the response's status code is equal to the expected status code
 
 ```typescript
 const response = await request.get('https://example.com/');
@@ -88,7 +97,7 @@ await expect(response).toHaveStatusCode(201);
 
 ### toHaveStatusText
 
-The `toHaveStatusText` matcher verifies that the response is equal to the expected status text
+Use `toHaveStatusText` matcher to verify that the response' status text is equal to the expected status text
 
 ```typescript
 const response = await request.get('https://example.com/404');
@@ -96,13 +105,53 @@ const response = await request.get('https://example.com/404');
 await expect(response).toHaveStatusText('Not Found');
 ```
 
+### toBeCreated
+
+Use `toBeCreated` matcher to verify that the response's status code is 201
+
+```typescript
+const response = await request.post('https://example.com/create');
+
+await expect(response).toBeCreated();
+```
+
+### toBeUnauthorized
+
+Use `toBeUnauthorized` matcher to verify that the response's status code is 401
+
+```typescript
+const response = await request.post('https://example.com/create');
+
+await expect(response).toBeUnauthorized();
+```
+
+### toBeForbidden
+
+Use `toBeForbidden` matcher to verify that the response's status code is 403
+
+```typescript
+const response = await request.post('https://example.com/create');
+
+await expect(response).toBeForbidden();
+```
+
+### toBeNotFound
+
+Use `toBeNotFound` matcher to verify that the response's status code is 404
+
+```typescript
+const response = await request.post('https://example.com/list');
+
+await expect(response).toBeNotFound();
+```
+
 ### toHaveJSON
 
-The `toHaveJSON` matcher verifies that the response' body json is equal to the expected object
+Use `toHaveJSON` matcher to verify that the response's body json is equal to the all properties of object instances (also known as "deep" equality)
 
 ```typescript
 const response = await request.get('https://example.com/data.json');
-// e.g. response returns { name: 'Ben', age: 37 }
+// e.g. response { name: 'Ben', age: 37 }
 
 await expect(response).toHaveJSON({
   name: 'Ben',
@@ -112,11 +161,11 @@ await expect(response).toHaveJSON({
 
 ### toContainJSON
 
-The `toContainJSON` matcher verifies that the response' body json contains the expected object
+Use `toContainJSON` matcher to verify that the response's body array contains that an item with a specific structure and values is contained in an array.
 
 ```typescript
 const response = await request.get('https://example.com/data.json');
-// e.g. response returns [{ name: 'Ben', age: 37 }, { name: 'Anna', age: 26 }]
+// e.g. response [{ name: 'Ben', age: 37 }, { name: 'Anna', age: 26 }]
 
 await expect(response).toContainJSON({
   name: 'Ben',
@@ -124,27 +173,85 @@ await expect(response).toContainJSON({
 });
 ```
 
-### toHaveHeader
+### toMatchJSON
 
-The `toHaveHeader` matcher verifies that the response' headers contains the expected header name and value
+Use `toMatchJSON` matcher to verify that the response's body json matches a subset of the properties of an object. It'll match received objects with properties that are not in the expected object.
 
 ```typescript
 const response = await request.get('https://example.com/data.json');
+// e.g. response [{ name: 'Ben', age: 37 }, { name: 'Anna', age: 26 }]
 
-await expect(response).toHaveHeader({
-  name: 'Content-Type', 
-  value: 'application/json'
+await expect(response).toMatchJSON({
+  name: 'John Doe',
 });
 ```
 
-### toHaveText
+### toHaveHeader
 
-The `toHaveText` matcher verifies that the response' body text contains the expected text
+Use `toHaveHeader` matcher to verify that the response's headers contains the expected header and value
+
+```typescript
+const response = await request.get('https://example.com');
+
+// Asserts that the response's headers contains the header 'content-length'
+await expect(response).toHaveHeaderName('content-length');
+
+// Asserts that the response's headers contains the header 'content-length' with value '22'
+await expect(response).toHaveHeaderName('content-length', '22');
+```
+
+### toHaveHeaders
+
+Use `toHaveHeaders` matcher to verify that the response's headers contains the expected header
+
+```typescript
+const response = await request.get('https://example.com');
+
+// Single
+await expect(response).toHaveHeaders({ 'content-length': '22' });
+
+// Multiple
+await expect(response).toHaveHeaders({ 'content-type': 'text/html', 'content-length': '22' });
+```
+
+### toHaveContentType
+
+Use `toHaveContentType` matcher to verify that the response' headers content type is equal to the expected type
 
 ```typescript
 const response = await request.get('https://example.com/');
 
-await expect(response).toHaveText('Hello, World!');
+await expect(response).toHaveContentType('text/html');
+```
+
+### toContainTextContent
+
+Use `toContainTextContent` matcher to verify that the response' body text contains the expected text
+
+```typescript
+const response = await request.get('https://example.com/');
+
+await expect(response).toContainTextContent('Hello, World!');
+```
+
+### toHaveLocation
+
+Use `toHaveLocation` matcher to verify that the response' headers location is equal to the expected location
+
+```typescript
+const response = await request.get('https://example.com/');
+
+await expect(response).toHaveLocation('/home');
+```
+
+### toBeRedirected
+
+Use `toBeRedirected` matcher to verify that the response' url is being redirected to the expected url
+
+```typescript
+const response = await request.get('https://example.com/user/profile');
+
+await expect(response).toBeRedirected('https://example.com/auth/login');
 ```
 
 ## Author
