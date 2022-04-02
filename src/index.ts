@@ -1,239 +1,209 @@
-import type { APIResponse, Expect } from '@playwright/test';
-import { getType } from 'jest-get-type';
-import {
-  DIM_COLOR,
-  INVERTED_COLOR,
-  matcherHint,
-  MatcherHintOptions,
-  printExpected,
-  printReceived,
-  RECEIVED_COLOR,
-  matcherErrorMessage,
-  printWithType,
-  printDiffOrStringify,
-  stringify,
-  getLabelPrinter,
-} from 'jest-matcher-utils';
+import type { APIResponse } from '@playwright/test';
+import * as matchers from 'expect/build/matchers';
+import { normalize, thisType, Result } from './utils';
 
-const EXPECTED_LABEL = 'Expected';
-const RECEIVED_LABEL = 'Received';
-
-interface APIResponseEx extends APIResponse {
-  _fetchLog(): Promise<string[]>;
-}
-
-const callLogText = (log: string[] | undefined): string => {
-  if (!log) return '';
-  return `
-Call log:
-  ${DIM_COLOR('- ' + (log || []).join('\n  - '))}
-`;
-};
+const { default: jestExpect } = matchers;
 
 const playwrightApiMatchers = {
-  async toHaveStatusCode(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: number) {
-    const matcherName = 'toHaveStatusCode';
-    const { isNot, promise } = this;
-    const log = isNot === response.ok() ? await response._fetchLog() : [];
+  async toHaveStatusCode(this: thisType, response: APIResponse, expected: number) {
+    const expectedMatcherName = 'toHaveStatusCode';
     const received = response.status();
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
 
-    const options: MatcherHintOptions = {
-      isNot,
-      promise,
-    };
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
-    const pass = received === expected;
-    const message = () =>
-      matcherHint(matcherName, undefined, undefined, options) +
-      '\n\n' +
-      `Expected status code: ${isNot ? ' not' : ''}${printExpected(expected)}\n` +
-      `Received status code: ${isNot ? '    ' : ''}${printReceived(received)}` +
-      callLogText(log);
-
-    return { message, pass };
+    return { pass, message };
   },
-
-  async toHaveStatusText(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: string) {
-    const matcherName = 'toHaveStatusCode';
-    const { isNot, promise } = this;
-    const log = isNot === response.ok() ? await response._fetchLog() : [];
+  async toHaveStatusText(this: thisType, response: APIResponse, expected: string) {
+    const expectedMatcherName = 'toHaveStatusText';
     const received = response.statusText();
 
-    const options: MatcherHintOptions = {
-      isNot,
-      promise,
-    };
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
 
-    const pass = received.toLowerCase() === expected.toLowerCase();
-    const message = () =>
-      matcherHint(matcherName, undefined, undefined, options) +
-      '\n\n' +
-      `Expected status text: ${isNot ? ' not' : ''}${printExpected(expected)}\n` +
-      `Received status text: ${isNot ? '    ' : ''}${printReceived(received)}` +
-      callLogText(log);
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
-    return { message, pass };
+    return { pass, message };
   },
-  async toHaveJSON(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: unknown) {
-    const matcherName = 'toHaveJSON';
-    const { isNot, promise } = this;
-    const options: MatcherHintOptions = {
-      comment: 'deep equality',
-      isNot,
-      promise,
-    };
-    const log = isNot === response.ok() ? await response._fetchLog() : [];
+  async toHaveJSON(this: thisType, response: APIResponse, expected: object) {
+    const expectedMatcherName = 'toHaveJSON';
     const received = await response.json();
 
-    if (received == null) {
-      throw new Error(
-        matcherErrorMessage(
-          matcherHint(matcherName, undefined, undefined, options),
-          `${RECEIVED_COLOR('received')} value must not be null nor undefined`,
-          printWithType('Received', received, printReceived) + callLogText(log),
-        ),
-      );
-    }
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toEqual.call(this, received, expected) as Result;
 
-    const pass = this.equals(received, expected, [this.utils.iterableEquality]);
-    const message = pass
-      ? () =>
-          matcherHint(matcherName, undefined, undefined, options) +
-          '\n\n' +
-          `Expected: not ${printExpected(expected)}\n` +
-          (stringify(expected) !== stringify(received) ? `Received:     ${printReceived(received)}` : '')
-      : () =>
-          matcherHint(matcherName, undefined, undefined, options) +
-          '\n\n' +
-          printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, true);
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
-    return { actual: received, expected, message, name: matcherName, pass };
+    return { pass, message };
   },
-  async toContainJSON(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: unknown) {
-    const matcherName = 'toContainJSON';
-    const { isNot, promise, utils } = this;
-    const options: MatcherHintOptions = {
-      comment: 'deep equality',
-      isNot,
-      promise,
-    };
-    const log = isNot === response.ok() ? await response._fetchLog() : [];
+  async toContainJSON(this: thisType, response: APIResponse, expected: object) {
+    const originalMatcherName = 'toContainEqual';
+    const expectedMatcherName = 'toContainJSON';
     const received = await response.json();
 
-    if (received == null) {
-      throw new Error(
-        matcherErrorMessage(
-          matcherHint(matcherName, undefined, undefined, options),
-          `${RECEIVED_COLOR('received')} value must not be null nor undefined`,
-          printWithType('Received', received, printReceived) + callLogText(log),
-        ),
-      );
-    }
+    const { message: originalMessage, pass } = jestExpect.toContainEqual.call(this, received, expected) as Result;
 
-    const printReceivedArrayContainExpectedItem = (received: Array<unknown>, index: number): string =>
-      RECEIVED_COLOR(
-        '[' +
-          received
-            .map((item, i) => {
-              const stringified = stringify(item);
-              return i === index ? INVERTED_COLOR(stringified) : stringified;
-            })
-            .join(', ') +
-          ']',
-      );
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
-    const index = Array.from(received).findIndex((item) => this.equals(item, expected, [utils.iterableEquality]));
-    const pass = index !== -1;
-    const message = () => {
-      const labelExpected = 'Expected value';
-      console.log('TYPE: ', Array.isArray(received));
-      const labelReceived = `Received ${getType(received)}`;
-      const printLabel = getLabelPrinter(labelExpected, labelReceived);
-
-      return (
-        matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        `${printLabel(labelExpected)}${isNot ? 'not ' : ''}${printExpected(expected)}\n` +
-        `${printLabel(labelReceived)}${isNot ? '    ' : ''}${
-          isNot && Array.isArray(received) ? printReceivedArrayContainExpectedItem(received, index) : printReceived(received)
-        }`
-      );
-    };
-
-    return { message, pass };
+    return { pass, message };
   },
-  async toHaveText(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: string) {
-    const matcherName = 'toHaveText';
-    const { isNot, promise } = this;
-    const log = isNot === response.ok() ? await response._fetchLog() : [];
+  async toMatchJSON(this: thisType, response: APIResponse, expected: object) {
+    const originalMatcherName = 'toMatchObject';
+    const expectedMatcherName = 'toMatchJSON';
+    const received = await response.json();
+
+    const { message: originalMessage, pass } = jestExpect.toMatchObject.call(this, received, expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toContainTextContent(this: thisType, response: APIResponse, expected: object) {
+    const expectedMatcherName = 'toContainTextContent';
     const received = await response.text();
 
-    const options: MatcherHintOptions = {
-      isNot,
-      promise,
-    };
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toContain.call(this, received, expected) as Result;
 
-    const pass = received.includes(expected);
-    const message = () =>
-      matcherHint(matcherName, undefined, undefined, options) +
-      '\n\n' +
-      printDiffOrStringify(expected, received, EXPECTED_LABEL, RECEIVED_LABEL, true) +
-      callLogText(log);
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
-    return { message, pass };
+    return { pass, message };
   },
-  async toHaveHeader(this: ReturnType<Expect['getState']>, response: APIResponseEx, expected: unknown) {
-    const matcherName = 'toHaveHeader';
-    const { isNot, promise, utils } = this;
-    const options: MatcherHintOptions = {
-      comment: 'deep equality',
-      isNot,
-      promise,
-    };
-    const log = isNot === response.ok() ? await response._fetchLog() : [];
-    const received = response.headersArray();
+  async toHaveHeader(this: thisType, response: APIResponse, expected: object) {
+    const originalMatcherName = 'toMatchObject';
+    const expectedMatcherName = 'toHaveHeader';
+    const received = response.headers();
 
-    if (received == null) {
-      throw new Error(
-        matcherErrorMessage(
-          matcherHint(matcherName, undefined, undefined, options),
-          `${RECEIVED_COLOR('received')} value must not be null nor undefined`,
-          printWithType('Received', received, printReceived) + callLogText(log),
-        ),
-      );
-    }
+    const { message: originalMessage, pass } = jestExpect.toMatchObject.call(this, received, expected) as Result;
 
-    const printReceivedArrayContainExpectedItem = (received: Array<unknown>, index: number): string =>
-      RECEIVED_COLOR(
-        '[' +
-          received
-            .map((item, i) => {
-              const stringified = stringify(item);
-              return i === index ? INVERTED_COLOR(stringified) : stringified;
-            })
-            .join(', ') +
-          ']',
-      );
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
-    const index = Array.from(received).findIndex((item) => this.equals(item, expected, [utils.iterableEquality]));
-    const pass = index !== -1;
-    const message = () => {
-      const labelExpected = 'Expected value';
-      console.log('TYPE: ', Array.isArray(received));
-      const labelReceived = `Received ${getType(received)}`;
-      const printLabel = getLabelPrinter(labelExpected, labelReceived);
+    return { pass, message };
+  },
+  async toHaveHeaderName(this: thisType, response: APIResponse, expected: string) {
+    const originalMatcherName = 'toHaveProperty';
+    const expectedMatcherName = 'toHaveHeaderName';
+    const received = response.headers();
 
-      return (
-        matcherHint(matcherName, undefined, undefined, options) +
-        '\n\n' +
-        `${printLabel(labelExpected)}${isNot ? 'not ' : ''}${printExpected(expected)}\n` +
-        `${printLabel(labelReceived)}${isNot ? '    ' : ''}${
-          isNot && Array.isArray(received) ? printReceivedArrayContainExpectedItem(received, index) : printReceived(received)
-        }`
-      );
-    };
+    const { message: originalMessage, pass } = jestExpect.toHaveProperty.call(this, received, expected) as Result;
 
-    return { message, pass };
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toHaveContentType(this: thisType, response: APIResponse, expected: string) {
+    const expectedMatcherName = 'toHaveContentType';
+    const received = response.headers();
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received['content-type'], expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toHaveLocation(this: thisType, response: APIResponse, expected: string) {
+    const expectedMatcherName = 'toHaveLocation';
+    const received = response.headers();
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received['location'], expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toBeCreated(this: thisType, response: APIResponse) {
+    const expectedMatcherName = 'toBeCreated';
+    const expected = 201;
+    const received = response.status();
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toBeUnauthorized(this: thisType, response: APIResponse) {
+    const expectedMatcherName = 'toBeUnauthorized';
+    const expected = 401;
+    const received = response.status();
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toBeForbidden(this: thisType, response: APIResponse) {
+    const expectedMatcherName = 'toBeForbidden';
+    const expected = 403;
+    const received = response.status();
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toBeNotFound(this: thisType, response: APIResponse) {
+    const expectedMatcherName = 'toBeNotFound';
+    const expected = 404;
+    const received = response.status();
+
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
+  },
+  async toBeRedirected(this: thisType, response: APIResponse, expected: string) {
+    const expectedMatcherName = 'toBeRedirected';
+    const received = response.url();
+    const {
+      name: originalMatcherName,
+      message: originalMessage,
+      pass,
+    } = jestExpect.toBe.call(this, received, expected) as Result;
+
+    const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
+
+    return { pass, message };
   },
 };
 
