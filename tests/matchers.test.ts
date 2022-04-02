@@ -96,14 +96,24 @@ test.describe('matchers', () => {
     await expect(response).toContainTextContent('Hello');
   });
 
-  test('verify toHaveHeader', async ({ request }) => {
+  test('verify toHaveHeaders', async ({ request }) => {
     const response = await request.get('/');
-    await expect(response).toHaveHeader({ 'content-length': '22' });
+    await expect(response).toHaveHeaders({ 'content-length': '22' });
   });
 
-  test('verify toHaveHeaderName', async ({ request }) => {
+  test('verify toHaveHeaders two properties', async ({ request }) => {
     const response = await request.get('/');
-    await expect(response).toHaveHeaderName('content-length');
+    await expect(response).toHaveHeaders({ 'content-length': '22', 'content-type': 'text/html' });
+  });
+
+  test('verify toHaveHeader key', async ({ request }) => {
+    const response = await request.get('/');
+    await expect(response).toHaveHeader('content-length');
+  });
+
+  test('verify toHaveHeader key & value', async ({ request }) => {
+    const response = await request.get('/');
+    await expect(response).toHaveHeader('content-length', '22');
   });
 
   test('verify toHaveContentType', async ({ request }) => {
