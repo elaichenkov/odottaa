@@ -1,17 +1,18 @@
 {
 "compilerOptions": {
-    "outDir": "./lib",
+    "outDir": "lib",
     "sourceMap": false,
     "moduleResolution": "node",
-    "importHelpers": true,
     "strict": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "target": "es2019",
     "noImplicitAny": true,
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowJs": true,
+    "lib": ["es2021"],
+    "skipLibCheck": true,
   },
   "files": ["src/index.d.ts"],
-  "include": ["src", "tests"]
+  "include": ["src/*.ts", "tests", "src/index.d.ts"]
 }

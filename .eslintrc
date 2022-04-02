@@ -19,6 +19,10 @@
     "arrow-spacing": "error",
     "complexity": "error",
     "no-duplicate-imports": "error",
-    "prettier/prettier": [2, { "useTabs": false }]
+    "prettier/prettier": [2, { "useTabs": false }],
+    "@typescript-eslint/no-var-requires": 0
+  },
+  "env": {
+    "node": true
   }
 }
