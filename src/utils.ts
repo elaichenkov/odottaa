@@ -26,7 +26,7 @@ export enum Label {
   ContentType = 'content type:',
 }
 
-const getLabel = (matcherName: string): Label => {
+export const getLabel = (matcherName: string): Label => {
   switch (matcherName) {
     case 'toHaveStatusCode':
     case 'toBeForbidden':
