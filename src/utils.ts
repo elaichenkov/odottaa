@@ -13,14 +13,16 @@ export enum Label {
   Received = 'Received:',
   ExpectedValue = 'Expected value:',
   ReceivedValue = 'Received value:',
+  ExpectedPath = 'Expected path:',
+  ReceivedPath = 'Received path:',
   Text = 'text:',
   Url = 'URL:',
   StatusCode = 'status code:',
   StatusText = 'status text:',
   JSON = 'JSON:',
   Location = 'location:',
-  Header = 'header:',
-  HeaderName = 'header name:',
+  Headers = 'headers:',
+  Header = 'header name:',
 }
 
 const getLabel = (matcherName: string): Label => {
@@ -40,10 +42,10 @@ const getLabel = (matcherName: string): Label => {
       return Label.JSON;
     case 'toHaveLocation':
       return Label.Location;
+    case 'toHaveHeaders':
+      return Label.Headers;
     case 'toHaveHeader':
       return Label.Header;
-    case 'toHaveHeaderName':
-      return Label.HeaderName;
     case 'toBeRedirected':
       return Label.Url;
     default: {
@@ -60,5 +62,7 @@ export const normalize = (message: string, originalMatcherName: string, expected
     .replaceAll(Label.Expected, `Expected ${label}`)
     .replaceAll(Label.ExpectedValue, `Expected ${label}`)
     .replaceAll(Label.Received, `Received ${label}`)
-    .replaceAll(Label.ReceivedValue, `Received ${label}`);
+    .replaceAll(Label.ReceivedValue, `Received ${label}`)
+    .replaceAll(Label.ExpectedPath, `Expected ${label}`)
+    .replaceAll(Label.ReceivedPath, `Received ${label}`);
 };
