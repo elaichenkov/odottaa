@@ -51,9 +51,11 @@
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "expect": "^28.1.0",
     "prettier": "^2.6.1",
     "release-it": "^15.0.0",
     "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "expect": "^28.1.0"
   }
 }
