@@ -29,6 +29,7 @@
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [TypeScript](#typescript)
   - [JavaScript](#javascript)
 - [API](#api)
   - [toHaveStatusCode](#tohavestatuscode)
@@ -60,6 +61,7 @@ npm i -D odottaa
 
 ## Usage
 
+### TypeScript
 1. Import `odottaa` module
 2. Extend expect with custom API matchers
 
