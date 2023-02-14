@@ -1,4 +1,5 @@
 import type { APIResponse } from '@playwright/test';
+// @ts-expect-error missed types for matchers after updating playwright
 import * as matchers from 'expect/build/matchers';
 import { normalize, thisType, Result } from './utils';
 
