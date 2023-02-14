@@ -1,9 +1,7 @@
 import type { APIResponse } from '@playwright/test';
-// @ts-expect-error missed types for matchers after updating playwright
-import * as matchers from 'expect/build/matchers';
+// @ts-expect-error - no types
+import jestExpect from 'expect/build/matchers';
 import { normalize, thisType, Result } from './utils';
-
-const { default: jestExpect } = matchers;
 
 const playwrightApiMatchers = {
   async toHaveStatusCode(this: thisType, response: APIResponse, expected: number) {
@@ -41,7 +39,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toEqual.call(this, received, expected) as Result;
+    } = jestExpect.toEqual.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -52,7 +50,11 @@ const playwrightApiMatchers = {
     const expectedMatcherName = 'toContainJSON';
     const received = await response.json();
 
-    const { message: originalMessage, pass } = jestExpect.toContainEqual.call(this, received, expected) as Result;
+    const { message: originalMessage, pass } = jestExpect.toContainEqual.call(
+      { ...this, customTesters: [] },
+      received,
+      expected,
+    ) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -63,7 +65,11 @@ const playwrightApiMatchers = {
     const expectedMatcherName = 'toMatchJSON';
     const received = await response.json();
 
-    const { message: originalMessage, pass } = jestExpect.toMatchObject.call(this, received, expected) as Result;
+    const { message: originalMessage, pass } = jestExpect.toMatchObject.call(
+      { ...this, customTesters: [] },
+      received,
+      expected,
+    ) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -77,7 +83,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toContain.call(this, received, expected) as Result;
+    } = jestExpect.toContain.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -88,7 +94,11 @@ const playwrightApiMatchers = {
     const expectedMatcherName = 'toHaveHeaders';
     const received = response.headers();
 
-    const { message: originalMessage, pass } = jestExpect.toMatchObject.call(this, received, expected) as Result;
+    const { message: originalMessage, pass } = jestExpect.toMatchObject.call(
+      { ...this, customTesters: [] },
+      received,
+      expected,
+    ) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -102,7 +112,11 @@ const playwrightApiMatchers = {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { message: originalMessage, pass } = jestExpect.toHaveProperty.call(this, received, ...expected) as Result;
+    const { message: originalMessage, pass } = jestExpect.toHaveProperty.call(
+      { ...this, customTesters: [] },
+      received,
+      ...expected,
+    ) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
