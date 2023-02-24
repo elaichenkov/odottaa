@@ -11,7 +11,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -25,7 +25,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -130,7 +130,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received['content-type'], expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received['content-type'], expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -144,7 +144,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received['location'], expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received['location'], expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -159,7 +159,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -174,7 +174,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -189,7 +189,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -204,7 +204,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
@@ -217,7 +217,7 @@ const playwrightApiMatchers = {
       name: originalMatcherName,
       message: originalMessage,
       pass,
-    } = jestExpect.toBe.call(this, received, expected) as Result;
+    } = jestExpect.toBe.call({ ...this, customTesters: [] }, received, expected) as Result;
 
     const message = () => normalize(originalMessage(), originalMatcherName, expectedMatcherName);
 
