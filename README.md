@@ -196,10 +196,10 @@ Use `toHaveHeader` matcher to verify that the response's headers contains the ex
 const response = await request.get('https://example.com');
 
 // Asserts that the response's headers contains the header 'content-length'
-await expect(response).toHaveHeaderName('content-length');
+await expect(response).toHaveHeader('content-length');
 
 // Asserts that the response's headers contains the header 'content-length' with value '22'
-await expect(response).toHaveHeaderName('content-length', '22');
+await expect(response).toHaveHeader('content-length', '22');
 ```
 
 ### toHaveHeaders
